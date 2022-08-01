@@ -1,0 +1,52 @@
+<body>
+    <div id="root"></div>
+    <script crossorigin src="https://unpkg.com/react@16.12.0/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16.12.0/umd/react-dom.development.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
+    <script type="text/babel">
+        function Name({ name, onNameChange }) {
+            return (
+                <div>
+                    <label htmlFor="nameInput">Name:</label>
+                    <input type="text" value={name} onChange={onNameChange} />
+                </div>
+            )
+        }
+
+        function FavoriteAnimal() {
+            const [animal, setAnimal] = React.useState('')
+            return (
+                <div>
+                    <label htmlFor="animalInput">Favorite Animal:</label>
+                    <input
+                        type="text"
+                        id='animalInput'
+                        value={animal}
+                        onChange={(e) => setAnimal(e.target.value)}
+                    />
+                </div>
+            )
+        }
+
+        function Diaplay({ name }) {
+            const lowerCaseName = name.toLowerCase()
+            const capitalizedName = lowerCaseName.charAt(0).toUpperCase() + name.slice(1)
+            return (
+                <h1>Hey {capitalizedName} You are great!</h1>
+            )
+        }
+
+        function App() {
+            const [name, setName] = React.useState('')
+            return (
+                <form>
+                    <Name name={name} onNameChange={(e) => setName(e.target.value)} />
+                    <FavoriteAnimal />
+                    <Diaplay name={name} />
+                </form>
+            )
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'))
+    </script>
+</body>

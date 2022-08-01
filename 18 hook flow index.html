@@ -1,0 +1,124 @@
+<body>
+    <div id="root"></div>
+    <script src="https://unpkg.com/react@16.12.0/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16.12.0/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.8.3/babel.js"></script>
+    <script type="text/babel">
+        // https://github.com/donavon/hook-flow
+
+        function Child() {
+            console.log('%c    Child: render start', 'color: Green')
+
+            const [count, setCount] = React.useState(() => {
+                console.log('%c    Child: useState callback', 'color: Red')
+                return 0
+            })
+
+            React.useEffect(() => {
+                console.log('%c    Child: useEffect no deps', 'color: Purple')
+                return () => {
+                    console.log(
+                        '%c    Child: useEffect no deps cleanup',
+                        'color: Purple',
+                    )
+                }
+            })
+
+            React.useEffect(() => {
+                console.log(
+                    '%c    Child: useEffect empty deps',
+                    'color: Orange',
+                )
+                return () => {
+                    console.log(
+                        '%c    Child: useEffect empty deps cleanup',
+                        'color: Orange',
+                    )
+                }
+            }, [])
+
+            React.useEffect(() => {
+                console.log('%c    Child: useEffect with dep', 'color: Blue')
+                return () => {
+                    console.log(
+                        '%c    Child: useEffect with dep cleanup',
+                        'color: Blue',
+                    )
+                }
+            }, [count])
+
+            const element = (
+                <button onClick={() => setCount(previousCount => previousCount + 1)}>
+                    {count}
+                </button>
+            )
+
+            console.log('%c    Child: render end', 'color: Green')
+
+            return element
+        }
+
+        function App() {
+            console.log('%cApp: render start', 'color: Green')
+
+            const [showChild, setShowChild] = React.useState(() => {
+                console.log('%cApp: useState callback', 'color: Red')
+                return false
+            })
+
+            React.useEffect(() => {
+                console.log('%cApp: useEffect no deps', 'color: Purple')
+                return () => {
+                    console.log('%cApp: useEffect no deps cleanup', 'color: Purple')
+                }
+            })
+
+            React.useEffect(() => {
+                console.log('%cApp: useEffect empty deps', 'color: Orange')
+                return () => {
+                    console.log(
+                        '%cApp: useEffect empty deps cleanup',
+                        'color: Orange',
+                    )
+                }
+            }, [])
+
+            React.useEffect(() => {
+                console.log('%cApp: useEffect with dep', 'color: Blue')
+                return () => {
+                    console.log('%cApp: useEffect with dep cleanup', 'color: Blue')
+                }
+            }, [showChild])
+
+            const element = (
+                <>
+                    <label>
+                        <input
+                            type="checkbox"
+                            checked={showChild}
+                            onChange={e => setShowChild(e.target.checked)}
+                        />{' '}
+                        show child
+                    </label>
+                    <div
+                        style={{
+                            padding: 10,
+                            margin: 10,
+                            height: 30,
+                            width: 30,
+                            border: 'solid',
+                        }}
+                    >
+                        {showChild ? <Child /> : null}
+                    </div>
+                </>
+            )
+
+            console.log('%cApp: render end', 'color: Green')
+
+            return element
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'))
+    </script>
+</body>
